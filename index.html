@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合利宝商户打款激活</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#1A1A2E',
+            accent: '#1677FF',
+            success: '#22C55E',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            pagebg: '#F5F5F5',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --brand: #1A1A2E;
+      --accent: #1677FF;
+      --success: #22C55E;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #F5F5F5;
+      color: #333;
+      min-height: 100vh;
+    }
+    .page-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    /* Header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      margin-bottom: 16px;
+    }
+    .page-header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--brand);
+    }
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 24px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 14px;
+      color: #666;
+      white-space: nowrap;
+    }
+    .filter-input {
+      height: 32px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      padding: 0 11px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      min-width: 160px;
+    }
+    .filter-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(22,119,255,0.12);
+    }
+    .filter-select {
+      height: 32px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      padding: 0 28px 0 11px;
+      font-size: 14px;
+      outline: none;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      min-width: 100px;
+    }
+    .filter-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(22,119,255,0.12);
+    }
+    .filter-date {
+      height: 32px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      padding: 0 11px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      color: #333;
+    }
+    .filter-date:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(22,119,255,0.12);
+    }
+    .date-sep {
+      color: #999;
+      font-size: 14px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      padding: 0 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #4096FF;
+    }
+    .btn-primary:active {
+      background: #0958D9;
+    }
+    .btn-default {
+      background: #fff;
+      color: #333;
+      border: 1px solid #d9d9d9;
+    }
+    .btn-default:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .btn-lg {
+      height: 36px;
+      padding: 0 20px;
+      font-size: 14px;
+    }
+    /* Table */
+    .table-wrapper {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .data-table thead {
+      background: #FAFAFA;
+    }
+    .data-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+      border-bottom: 1px solid #f0f0f0;
+      white-space: nowrap;
+    }
+    .data-table td {
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #333;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .data-table tbody tr:hover {
+      background: #FAFAFA;
+    }
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    /* Status tags */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .tag-success {
+      background: #F6FFED;
+      color: #389E0D;
+      border: 1px solid #B7EB8F;
+    }
+    .tag-fail {
+      background: #FFF2F0;
+      color: #CF1322;
+      border: 1px solid #FFCCC7;
+    }
+    .tag-pending {
+      background: #E6F4FF;
+      color: #1677FF;
+      border: 1px solid #91CAFF;
+    }
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      border-top: 1px solid #f0f0f0;
+      background: #FAFAFA;
+    }
+    .pagination-info {
+      font-size: 13px;
+      color: #999;
+    }
+    .pagination-pages {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .page-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #666;
+      background: #fff;
+      border: 1px solid #d9d9d9;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .page-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .page-btn.active {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .page-btn:disabled {
+      color: #d9d9d9;
+      cursor: not-allowed;
+      border-color: #f0f0f0;
+    }
+    /* Modal */
+    .modal-mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.45);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-mask.show {
+      display: flex;
+    }
+    .modal {
+      background: #fff;
+      border-radius: 8px;
+      width: 520px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      animation: modalIn 0.2s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--brand);
+    }
+    .modal-close {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: #999;
+      font-size: 18px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .modal-close:hover {
+      color: #333;
+      background: #f5f5f5;
+    }
+    .modal-body {
+      padding: 24px;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 12px 24px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    .form-textarea {
+      width: 100%;
+      height: 160px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      padding: 8px 11px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s;
+      line-height: 1.6;
+    }
+    .form-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(22,119,255,0.12);
+    }
+    .form-textarea::placeholder {
+      color: #bbb;
+    }
+    .form-input {
+      width: 100%;
+      height: 32px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      padding: 0 11px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(22,119,255,0.12);
+    }
+    .form-amount {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .form-summary {
+      padding: 10px 14px;
+      background: #FAFAFA;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #666;
+    }
+    .form-summary strong {
+      color: var(--brand);
+    }
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      pointer-events: none;
+    }
+    .toast {
+      padding: 10px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      pointer-events: auto;
+      animation: toastIn 0.3s ease, toastOut 0.3s ease 2.5s forwards;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast-success {
+      background: #F6FFED;
+      color: #389E0D;
+      border: 1px solid #B7EB8F;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; }
+      to { opacity: 0; transform: translateY(-20px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <!-- Header -->
+    <div class="page-header">
+      <h1>合利宝商户打款激活</h1>
+      <button class="btn btn-primary btn-lg" onclick="openModal()">批量打款</button>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <span class="filter-label">收款商户号</span>
+      <input class="filter-input" id="searchMerchant" placeholder="请输入商户号" style="min-width:200px;">
+      <span class="filter-label">状态</span>
+      <select class="filter-select" id="searchStatus">
+        <option value="">全部</option>
+        <option value="success">成功</option>
+        <option value="fail">失败</option>
+        <option value="pending">打款中</option>
+      </select>
+      <span class="filter-label">打款时间</span>
+      <input type="date" class="filter-date" id="searchDateStart">
+      <span class="date-sep">~</span>
+      <input type="date" class="filter-date" id="searchDateEnd">
+      <button class="btn btn-primary" onclick="handleSearch()">查询</button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:60px;">ID</th>
+            <th style="width:150px;">收款商户号</th>
+            <th style="width:130px;">付款商户</th>
+            <th style="width:70px;">金额</th>
+            <th style="width:170px;">打款时间</th>
+            <th style="width:80px;">状态</th>
+            <th style="width:80px;">操作人</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="pagination-info" id="pageInfo">共 0 条记录</div>
+        <div class="pagination-pages" id="pageBtns"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-mask" id="modalMask" onclick="closeModalByMask(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>批量打款</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">收款商户号（每行一个）</label>
+          <textarea class="form-textarea" id="merchantInput" placeholder="请输入收款商户号，每行一个&#10;例如：&#10;MCH00A1B2C3&#10;MCH00D4E5F6" oninput="updateSummary()"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">打款金额</label>
+          <div class="form-amount">0.01 元（固定）</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">备注说明</label>
+          <input class="form-input" id="remarkInput" placeholder="商户激活打款" value="商户激活打款">
+        </div>
+        <div class="form-summary" id="paymentSummary">已录入 <strong>0</strong> 个收款商户号 | 合计金额 <strong>¥0.00</strong></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" onclick="closeModal()">取消</button>
+        <button class="btn btn-primary" onclick="confirmPayment()">确认打款</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // ---------- Mock Data ----------
+    const mockData = [
+      { id:1, merchant:'MCH00A1B2C3', payer:'PAY0001', amount:0.01, time:'2026-05-19 14:23', status:'success', operator:'admin', remark:'商户激活打款' },
+      { id:2, merchant:'MCH00D4E5F6', payer:'PAY0001', amount:0.01, time:'2026-05-19 14:20', status:'fail', operator:'admin', remark:'商户激活打款' },
+      { id:3, merchant:'MCH00G7H8I9', payer:'PAY0001', amount:0.01, time:'2026-05-19 14:18', status:'pending', operator:'admin', remark:'商户激活打款' },
+      { id:4, merchant:'MCH00J1K2L3', payer:'PAY0001', amount:0.01, time:'2026-05-19 11:05', status:'success', operator:'张三', remark:'商户激活打款' },
+      { id:5, merchant:'MCH00M4N5O6', payer:'PAY0002', amount:0.01, time:'2026-05-18 16:30', status:'success', operator:'李四', remark:'商户激活打款' },
+      { id:6, merchant:'MCH00P7Q8R9', payer:'PAY0001', amount:0.01, time:'2026-05-18 10:12', status:'fail', operator:'admin', remark:'商户激活打款' },
+      { id:7, merchant:'MCH00S1T2U3', payer:'PAY0002', amount:0.01, time:'2026-05-17 09:45', status:'success', operator:'张三', remark:'商户激活打款' },
+      { id:8, merchant:'MCH00V4W5X6', payer:'PAY0001', amount:0.01, time:'2026-05-16 15:08', status:'success', operator:'admin', remark:'商户激活打款' },
+      { id:9, merchant:'MCH00Y7Z8A9', payer:'PAY0003', amount:0.01, time:'2026-05-16 14:30', status:'pending', operator:'李四', remark:'商户激活打款' },
+      { id:10, merchant:'MCH00B1C2D3', payer:'PAY0001', amount:0.01, time:'2026-05-15 17:00', status:'success', operator:'admin', remark:'商户激活打款' },
+    ];
+
+    const PAGE_SIZE = 5;
+    let currentPage = 1;
+    let filteredData = [...mockData];
+
+    // ---------- Status Tag ----------
+    function statusTag(status) {
+      const map = {
+        success: '<span class="tag tag-success">成功</span>',
+        fail: '<span class="tag tag-fail">失败</span>',
+        pending: '<span class="tag tag-pending">打款中</span>',
+      };
+      return map[status] || status;
+    }
+
+    // ---------- Render Table ----------
+    function renderTable() {
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+      const pageData = filteredData.slice(start, end);
+      const tbody = document.getElementById('tableBody');
+
+      if (pageData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:48px 0;color:#999;">暂无数据</td></tr>';
+      } else {
+        tbody.innerHTML = pageData.map(row => `
+          <tr>
+            <td>${row.id}</td>
+            <td style="font-family:'SFMono-Regular',Consolas,monospace;">${row.merchant}</td>
+            <td style="font-family:'SFMono-Regular',Consolas,monospace;">${row.payer}</td>
+            <td>${row.amount.toFixed(2)}</td>
+            <td>${row.time}</td>
+            <td>${statusTag(row.status)}</td>
+            <td>${row.operator}</td>
+            <td style="color:#999;">${row.remark}</td>
+          </tr>
+        `).join('');
+      }
+
+      renderPagination();
+    }
+
+    // ---------- Pagination ----------
+    function renderPagination() {
+      const total = filteredData.length;
+      const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      document.getElementById('pageInfo').textContent = `共 ${total} 条记录`;
+
+      let html = '';
+      html += `<button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>&lt;</button>`;
+      for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+      }
+      html += `<button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>&gt;</button>`;
+      document.getElementById('pageBtns').innerHTML = html;
+    }
+
+    function goPage(page) {
+      const totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
+      if (page < 1 || page > totalPages) return;
+      currentPage = page;
+      renderTable();
+    }
+
+    // ---------- Search ----------
+    function handleSearch() {
+      const merchant = document.getElementById('searchMerchant').value.trim().toLowerCase();
+      const status = document.getElementById('searchStatus').value;
+      const dateStart = document.getElementById('searchDateStart').value;
+      const dateEnd = document.getElementById('searchDateEnd').value;
+
+      filteredData = mockData.filter(row => {
+        if (merchant && !row.merchant.toLowerCase().includes(merchant)) return false;
+        if (status && row.status !== status) return false;
+        if (dateStart) {
+          const rowDate = row.time.split(' ')[0];
+          if (rowDate < dateStart) return false;
+        }
+        if (dateEnd) {
+          const rowDate = row.time.split(' ')[0];
+          if (rowDate > dateEnd) return false;
+        }
+        return true;
+      });
+
+      currentPage = 1;
+      renderTable();
+    }
+
+    // ---------- Modal ----------
+    function openModal() {
+      document.getElementById('modalMask').classList.add('show');
+      document.getElementById('merchantInput').value = '';
+      document.getElementById('remarkInput').value = '商户激活打款';
+      updateSummary();
+    }
+
+    function closeModal() {
+      document.getElementById('modalMask').classList.remove('show');
+    }
+
+    function closeModalByMask(e) {
+      if (e.target === e.currentTarget) closeModal();
+    }
+
+    function updateSummary() {
+      const text = document.getElementById('merchantInput').value.trim();
+      const lines = text ? text.split('\n').filter(l => l.trim()) : [];
+      const count = lines.length;
+      const total = (count * 0.01).toFixed(2);
+      document.getElementById('paymentSummary').innerHTML = `已录入 <strong>${count}</strong> 个收款商户号 | 合计金额 <strong>¥${total}</strong>`;
+    }
+
+    function confirmPayment() {
+      const text = document.getElementById('merchantInput').value.trim();
+      const lines = text ? text.split('\n').filter(l => l.trim()) : [];
+      if (lines.length === 0) {
+        alert('请输入收款商户号');
+        return;
+      }
+
+      // Validate merchant format (11 chars alphanumeric)
+      for (const line of lines) {
+        if (!/^[A-Za-z0-9]{11}$/.test(line.trim())) {
+          alert(`商户号格式错误：${line.trim()}\n商户号需为11位字母数字组合`);
+          return;
+        }
+      }
+
+      const remark = document.getElementById('remarkInput').value.trim() || '商户激活打款';
+
+      // Add new records to the top of mockData
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+      const newRecords = lines.map((mch, i) => ({
+        id: mockData.length + i + 1,
+        merchant: mch.trim().toUpperCase(),
+        payer: 'PAY0001',
+        amount: 0.01,
+        time: timeStr,
+        status: 'pending',
+        operator: 'admin',
+        remark: remark,
+      }));
+
+      mockData.unshift(...newRecords);
+      filteredData = [...mockData];
+      currentPage = 1;
+      renderTable();
+      closeModal();
+      showToast(`成功提交 ${lines.length} 条打款记录`);
+    }
+
+    // ---------- Toast ----------
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast toast-success';
+      toast.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>${message}`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    // ---------- Init ----------
+    renderTable();
+  </script>
+</body>
+</html>
